@@ -1,2 +1,1 @@
-# Fractal
-PHP Fractal Classes
+# Examples
