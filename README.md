@@ -1,9 +1,6 @@
 # Examples
 
 ```php
-$fractal = new Fractal(640, 480, 100, -2, 1, -1, 1);
-$fractal->createImage("mandelbrot.png");
-
 $fractal = new Mandelbrot(640, 480, 100, -2, 1, -1, 1);
 $fractal->createImage("mandelbrot.png");
 
