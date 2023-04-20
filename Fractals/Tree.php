@@ -4,37 +4,49 @@ namespace Fractals;
 
 class Tree extends Fractal {
     private $angle;
+    private $angleFactor;
+    private $lengthFactor;
 
-    function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax, $angle) {
+    function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax, $angle, $lengthFactor = 0.7, $angleFactor = 0.6) {
         parent::__construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax);
+
+        // Only for tree
         $this->angle = $angle;
+        $this->lengthFactor = $lengthFactor;
+        $this->angleFactor = $angleFactor;
+
+        // Init
+        $this->image = imagecreatetruecolor($this->width, $this->height);
+        $lineColor = imagecolorallocate($this->image, 0, 0, 0);
+        imagefill($this->image, 0, 0, imagecolorallocate($this->image, 255, 255, 255));
+        $this->drawBranch($this->image, $lineColor, $this->width / 2, $this->height - 100, -$this->angle, $this->height / 4, $this->max_iterations);
     }
 
-    protected function calculatePixel($x, $y) {
-        $real = $this->xmin + ($x / $this->width) * ($this->xmax - $this->xmin);
-        $imag = $this->ymin + ($y / $this->height) * ($this->ymax - $this->ymin);
-
-        $zr = $real;
-        $zi = $imag;
-        $i = 0;
-
-        while ($i < $this->max_iterations && abs($zr) < 10 && abs($zi) < 10) {
-            $tmp = $zr * cos($this->angle) + $zi * sin($this->angle);
-            $zi = $zr * sin($this->angle) - $zi * cos($this->angle);
-            $zr = $tmp;
-
-            $zr = abs($zr);
-            $zi = abs($zi);
-
-            $zr2 = $zr * $zr;
-            $zi2 = $zi * $zi;
-
-            $zr = $zr2 - $zi2 + $real;
-            $zi = 2 * $zr * $zi + $imag;
-
-            $i++;
+    private function drawBranch($image, $color, float $x1, float $y1, float $angle, float $length, int $iterations): void {
+        if ($iterations <= 0) {
+            return;
         }
 
-        return $i == $this->max_iterations ? 0 : 255 - (int)(log($i) * 10);
+        $x2 = $x1 + cos($angle) * $length;
+        $y2 = $y1 + sin($angle) * $length;
+
+        imageline($image, round($x1), round($y1), round($x2), round($y2), $color);
+
+        $this->drawBranch($image, $color, $x2, $y2, $angle - $this->angle * $this->angleFactor, $length * $this->lengthFactor, $iterations - 1);
+        $this->drawBranch($image, $color, $x2, $y2, $angle + $this->angle * $this->angleFactor, $length * $this->lengthFactor, $iterations - 1);
+    }
+
+    /**
+     * @param $filename
+     * @return void
+     */
+    function createImage($filename) {
+        imagepng($this->image, $filename);
+        imagedestroy($this->image);
+    }
+
+    protected function calculatePixel($x, $y)
+    {
+        // Uses imageline so we can't use getpixel
     }
 }
