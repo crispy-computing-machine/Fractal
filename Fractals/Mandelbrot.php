@@ -3,6 +3,7 @@
 namespace Fractals;
 
 class Mandelbrot extends Fractal {
+
     protected function calculatePixel($x, $y) {
         $real = $this->xmin + ($x / $this->width) * ($this->xmax - $this->xmin);
         $imag = $this->ymin + ($y / $this->height) * ($this->ymax - $this->ymin);

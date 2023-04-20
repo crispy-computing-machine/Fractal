@@ -24,6 +24,6 @@ class BurningShip extends Fractal {
             $i++;
         }
 
-        return $i == $this->max_iterations ? 0 : 255 - (int)(log($i) * 10);
+        return [$i % 256, ($i * 9) % 256, ($i * 7) % 256];
     }
 }

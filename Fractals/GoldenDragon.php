@@ -5,14 +5,13 @@ namespace Fractals;
 class GoldenDragon extends Fractal {
     function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax) {
         parent::__construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax);
-
-        $this->image = imagecreatetruecolor($this->width, $this->height);
-        imagefill($this->image, 0, 0, imagecolorallocate($this->image, 255, 255, 255));
         $this->generateFractal();
     }
 
     private function generateFractal(): void {
 
+        $this->image = imagecreatetruecolor($this->width, $this->height);
+        imagefill($this->image, 0, 0, imagecolorallocate($this->image, 255, 255, 255));
         $line = imagecolorallocate($this->image, 0, 0, 0);
 
         /**
@@ -55,7 +54,6 @@ class GoldenDragon extends Fractal {
                 }
             }
             $sequence = $newSequence;
-            #$this->displayProgressBar($i, $this->max_iterations);
         }
 
         // Draw the L-system sequence
@@ -63,14 +61,14 @@ class GoldenDragon extends Fractal {
         $y = $this->height / 2;
         $direction = 0;
         $stack = [];
-        $total = count($sequence);
         $i = 0;
         foreach ($sequence as $char) {
             switch ($char) {
                 case 'F':
                     $x2 = $x + cos($direction) * 2;
                     $y2 = $y + sin($direction) * 2;
-                    imageline($this->image, round($x), round($y), round($x2), round($y2), $line);
+                    $color = imagecolorallocate($this->image, $i % 256, ($i * 9) % 256, ($i * 7) % 256);
+                    imageline($this->image, round($x), round($y), round($x2), round($y2), $color);
                     $x = $x2;
                     $y = $y2;
                     break;
@@ -87,7 +85,6 @@ class GoldenDragon extends Fractal {
                     [$x, $y, $direction] = array_pop($stack);
                     break;
             }
-            #$this->displayProgressBar($i, $total);
             $i++;
         }
     }
@@ -101,8 +98,4 @@ class GoldenDragon extends Fractal {
         imagedestroy($this->image);
     }
 
-    protected function calculatePixel($x, $y)
-    {
-        // Uses imageline so we can't use getpixel
-    }
 }

@@ -2,11 +2,9 @@
 
 namespace Fractals;
 class Feigenbaum extends Fractal {
-    private $r;
 
     function __construct($width, $height, $max_iterations, $xmin = 2.4, $xmax = 4.0, $ymin = 0, $ymax = 1) {
         parent::__construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax);
-
         $this->generate();
     }
 
@@ -27,14 +25,12 @@ class Feigenbaum extends Fractal {
                     $y = (int)(($x - $this->ymin) / ($this->ymax - $this->ymin) * $this->height);
 
                     if ($y >= 0 && $y < $this->height) {
-                        imagesetpixel($this->image, $i, $this->height - $y, $black);
+                        $color = imagecolorallocate($this->image, $i % 256, ($i * 9) % 256, ($i * 7) % 256);
+                        imagesetpixel($this->image, $i, $this->height - $y, $color);
                     }
                 }
             }
         }
-    }
-
-    protected function calculatePixel($x, $y) {
     }
 
     public function createImage($filename)

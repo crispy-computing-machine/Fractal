@@ -33,9 +33,8 @@ class Julia extends Fractal {
         $this->zoom = $zoom;
         $this->moveX = $moveX;
         $this->moveY = $moveY;
-        $this->generateImage();
         $this->width = $width;
-
+        $this->generateImage();
     }
 
     public function generateImage() {
@@ -60,9 +59,7 @@ class Julia extends Fractal {
         }
 
     }
-    
-    protected function calculatePixel($x, $y) {}
-    
+
     public function createImage($filename)
     {
         imagepng($this->image, $filename);

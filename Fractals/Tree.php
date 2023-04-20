@@ -10,16 +10,14 @@ class Tree extends Fractal {
     function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax, $angle, $lengthFactor = 0.7, $angleFactor = 0.6) {
         parent::__construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax);
 
-        // Only for tree
         $this->angle = $angle;
         $this->lengthFactor = $lengthFactor;
         $this->angleFactor = $angleFactor;
 
         // Init
         $this->image = imagecreatetruecolor($this->width, $this->height);
-        $lineColor = imagecolorallocate($this->image, 0, 0, 0);
         imagefill($this->image, 0, 0, imagecolorallocate($this->image, 255, 255, 255));
-        $this->drawBranch($this->image, $lineColor, $this->width / 2, $this->height - 100, -$this->angle, $this->height / 4, $this->max_iterations);
+        $this->drawBranch($this->image, imagecolorallocate($this->image, 0, 0, 0), $this->width / 2, $this->height - 100, -$this->angle, $this->height / 4, $this->max_iterations);
     }
 
     private function drawBranch($image, $color, float $x1, float $y1, float $angle, float $length, int $iterations): void {
@@ -43,10 +41,5 @@ class Tree extends Fractal {
     function createImage($filename) {
         imagepng($this->image, $filename);
         imagedestroy($this->image);
-    }
-
-    protected function calculatePixel($x, $y)
-    {
-        // Uses imageline so we can't use getpixel
     }
 }

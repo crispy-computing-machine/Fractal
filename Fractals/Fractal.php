@@ -1,6 +1,6 @@
 <?php
 namespace Fractals;
-abstract class Fractal {
+class Fractal {
     protected $width;
     protected $height;
     protected $max_iterations;
@@ -20,15 +20,18 @@ abstract class Fractal {
         $this->ymax = $ymax;
     }
 
-    abstract protected function calculatePixel($x, $y);
-
     function createImage($filename) {
         $this->image = imagecreatetruecolor($this->width, $this->height);
         imagefill($this->image, 0, 0, imagecolorallocate($this->image, 255, 255, 255));
         for ($x = 0; $x < $this->width; $x++) {
             for ($y = 0; $y < $this->height; $y++) {
                 $color = $this->calculatePixel($x, $y);
-                imagesetpixel($this->image, $x, $y, imagecolorallocate($this->image, $color, $color, $color));
+                if(is_array($color)){
+                    [$r, $g, $b] = $color;
+                    imagesetpixel($this->image, $x, $y, imagecolorallocate($this->image, $r, $g, $b)); // random alpha?
+                } else {
+                    imagesetpixel($this->image, $x, $y, imagecolorallocate($this->image, $color, $color, $color));
+                }
             }
         }
 
