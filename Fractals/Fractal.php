@@ -1,4 +1,5 @@
 <?php
+namespace Fractals;
 abstract class Fractal {
     protected $width;
     protected $height;

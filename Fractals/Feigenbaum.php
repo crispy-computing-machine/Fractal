@@ -1,7 +1,12 @@
 <?php
-class GoldenDragon extends Fractal {
-    function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax) {
+
+namespace Fractals;
+class Feigenbaum extends Fractal {
+    private $r;
+
+    function __construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax, $r) {
         parent::__construct($width, $height, $max_iterations, $xmin, $xmax, $ymin, $ymax);
+        $this->r = $r;
     }
 
     protected function calculatePixel($x, $y) {
@@ -13,11 +18,7 @@ class GoldenDragon extends Fractal {
         $i = 0;
 
         while ($i < $this->max_iterations) {
-            if ($zi < 0) {
-                $zi = -$zi;
-                $zr = 1 - $zr;
-            }
-            $tmp = $zi - $zr;
+            $tmp = $zr * $zr - $zi * $zi + $this->r;
             $zi = 2 * $zr * $zi;
             $zr = $tmp;
 

@@ -1,4 +1,7 @@
 <?php
+
+namespace Fractals;
+
 class Mandelbrot extends Fractal {
     protected function calculatePixel($x, $y) {
         $real = $this->xmin + ($x / $this->width) * ($this->xmax - $this->xmin);

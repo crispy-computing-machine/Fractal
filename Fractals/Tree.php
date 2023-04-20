@@ -1,4 +1,7 @@
 <?php
+
+namespace Fractals;
+
 class Tree extends Fractal {
     private $angle;
 
