@@ -30,7 +30,7 @@ $fractal = new Feigenbaum($height, $width, 100, 3, 4, -1, 1, 3.7);
 $fractal->createImage("feigenbaum.png");
 
 $fractal = new GoldenDragon($height, $width, 15, -2, 2, -2, 2);
-$fractal->createImage("golden_dragon.png"); //43m process time
+$fractal->createImage("golden_dragon.png");
 
 // Calculating the script execution time
 $end_time = microtime(true);
